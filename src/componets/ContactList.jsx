@@ -1,4 +1,5 @@
 // Imports the react libary
+import { useEffect } from "react";
 import { useState } from "react";
 import ContactRow from "./ContactRow";
 
@@ -11,8 +12,21 @@ const dummyContacts = [
 
 export default function ContactList() {
     const [contacts, setContacts] = useState(dummyContacts);
-    
-    console.log("Contacts: ", contacts)
+    useEffect(() => {
+        async function fetchContacts() {
+            try {
+                const response = await fetch(
+                    "https://jsonplace-univclone.herokuapp.com/users"
+                  );
+                  const result = await response.json();
+                  setContacts(result);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        fetchContacts();
+    },[])
+    console.log("Contacts: ", contacts);
   return ( 
         <table>
           <thead>
